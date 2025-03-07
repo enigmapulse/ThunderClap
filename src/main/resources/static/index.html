@@ -4,25 +4,135 @@
     <meta charset="UTF-8">
     <title>WebSocket Chat</title>
     <style>
-        /* Simple inline styling; you can move this to a CSS file if desired */
-        #messageArea {
-            list-style: none;
-            padding: 0;
+        :root {
+            --primary: #5865F2;
+            --background: #18191c;
+            --surface: #2f3136;
+            --text: #dcddde;
+            --text-muted: #72767d;
         }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2em;
+        }
+
+        #messageArea {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 20px;
+            height: 60vh;
+            overflow-y: auto;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
         .chat-message {
-            margin: 5px 0;
+            padding: 12px 16px;
+            margin: 8px 0;
+            background: var(--background);
+            border-radius: 8px;
+            animation: messageAppear 0.2s ease-out;
+            display: flex;
+            gap: 12px;
+            align-items: baseline;
+        }
+
+        .chat-message[data-type="JOIN"] {
+            background: rgba(88, 101, 242, 0.1);
+            color: var(--primary);
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: var(--surface);
+            color: var(--text);
+            margin: 8px 0;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sender {
+            color: var(--primary);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            flex-grow: 1;
         }
     </style>
 </head>
 <body>
-<h2>WebSocket Chat</h2>
-<div>
-    <input type="text" id="username" placeholder="Enter your name" />
+<h2>ChatRoom</h2>
+<div class="input-group">
+    <input type="text" id="username" placeholder="Enter your name">
     <button id="connectButton">Connect</button>
 </div>
+
 <ul id="messageArea"></ul>
-<div>
-    <input type="text" id="message" placeholder="Type a message..." />
+
+<div class="input-group">
+    <input type="text" id="message" placeholder="Type a message...">
     <button id="sendButton">Send</button>
 </div>
 <!-- Include SockJS and StompJS libraries -->

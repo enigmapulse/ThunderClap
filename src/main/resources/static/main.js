@@ -41,10 +41,22 @@ function showMessage(message) {
     var messageArea = document.getElementById("messageArea");
     var messageElement = document.createElement("li");
     messageElement.className = "chat-message";
+    messageElement.setAttribute('data-type', message.type);
+
+    var senderSpan = document.createElement('span');
+    senderSpan.className = 'sender';
+    senderSpan.textContent = message.sender;
+
+    var contentSpan = document.createElement('span');
+    contentSpan.className = 'message-content';
+
     if (message.type === "JOIN") {
-        messageElement.innerText = message.sender + " joined the chat";
-    } else if (message.type === "CHAT") {
-        messageElement.innerText = message.sender + ": " + message.content;
+        contentSpan.textContent = "joined the chat";
+    } else {
+        contentSpan.textContent = message.content;
     }
+
+    messageElement.appendChild(senderSpan);
+    messageElement.appendChild(contentSpan);
     messageArea.appendChild(messageElement);
 }
