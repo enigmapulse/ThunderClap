@@ -26,6 +26,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // Prefix for messages bound for methods annotated with @MessageMapping
         registry.setApplicationDestinationPrefixes("/app");
     }
-
-    // Just a comment here to test out
 }
