@@ -1,5 +1,6 @@
-package com.enigmapulse.thunderclap;
+package com.enigmapulse.thunderclap.controller;
 
+import com.enigmapulse.thunderclap.ChatMessage;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;

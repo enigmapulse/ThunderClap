@@ -1,0 +1,21 @@
+package com.enigmapulse.thunderclap;
+// this automatically implements all the required CRUD operation for user into database
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+// we pass two parameters here
+//class of our entity and type of pur id
+
+//there are two standards here: crud repository and jpa repository
+//jpa is a more advanced version of crud offering more features than just create, update, delete etc
+
+public interface UserRepository extends JpaRepository<AppUser, Long> {
+    Optional<AppUser> findByUsername(String username);
+}
+//TLDR Optional return function is modern practice
+//Using Optional<AppUser> for the findByUsername method signals that the user
+// you’re trying to retrieve might not exist. Instead of returning null when
+// no matching AppUser is found, it returns an Optional that can be empty.
+// This encourages you to handle the "user not found" case explicitly
+// (for example, using methods like isPresent(), orElse(), orElseThrow())
+// and helps avoid potential NullPointerExceptions.
