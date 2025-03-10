@@ -1,5 +1,26 @@
 var stompClient = null;
+var messageArea = document.getElementById("messageArea");
 
+// Old messages are fetched from the database and shown on the page after refreshing
+fetch('http://localhost:8080/old-messages')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json(); // Assuming the response is JSON
+    })
+    .then(data => {
+        if (Array.isArray(data)) {
+            data.slice().reverse().forEach((item, index) => {
+                showMessage(item)
+            });
+        } else {
+            console.log('Fetched data is not an array:', data);
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 
 // Connect button event listener
 document.getElementById("connectButton").addEventListener("click", function() {
@@ -20,6 +41,7 @@ document.getElementById("connectButton").addEventListener("click", function() {
     }
 });
 
+
 // Send button event listener
 document.getElementById("sendButton").addEventListener("click", function() {
     var messageInput = document.getElementById("message");
@@ -38,7 +60,6 @@ document.getElementById("sendButton").addEventListener("click", function() {
 
 // Function to display messages on the page
 function showMessage(message) {
-    var messageArea = document.getElementById("messageArea");
     var messageElement = document.createElement("li");
     messageElement.className = "chat-message";
     messageElement.setAttribute('data-type', message.type);
@@ -58,5 +79,5 @@ function showMessage(message) {
 
     messageElement.appendChild(senderSpan);
     messageElement.appendChild(contentSpan);
-    messageArea.appendChild(messageElement);
+    messageArea.appendChild(messageElement); // This is where each message is being appended
 }

@@ -1,6 +1,15 @@
-package com.enigmapulse.thunderclap;
+package com.enigmapulse.thunderclap.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class ChatMessage {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto orders incoming messages
+    private int serial; // When I'm reloading all the messages, each message has a serial number
     private String sender;
     private String content;
     private MessageType type;
