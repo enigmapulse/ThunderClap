@@ -1,6 +1,8 @@
-package com.enigmapulse.thunderclap;
+package com.enigmapulse.thunderclap.repo;
 // this automatically implements all the required CRUD operation for user into database
 import java.util.Optional;
+
+import com.enigmapulse.thunderclap.models.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 // we pass two parameters here

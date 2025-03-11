@@ -1,4 +1,4 @@
-package com.enigmapulse.thunderclap;
+package com.enigmapulse.thunderclap.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
+
+// this is the user entity, basically what would get stored in our database when someone registers
 
 @Getter
 @Entity // means data from its fields would be added to our database

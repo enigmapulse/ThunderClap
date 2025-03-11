@@ -1,4 +1,4 @@
-package com.enigmapulse.thunderclap;
+package com.enigmapulse.thunderclap.models;
 
 public class ChatMessage {
     private String sender;

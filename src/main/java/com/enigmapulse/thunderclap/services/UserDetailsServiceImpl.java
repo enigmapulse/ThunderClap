@@ -1,7 +1,9 @@
-package com.enigmapulse.thunderclap;
+package com.enigmapulse.thunderclap.services;
 
-import java.util.Collections;
 import java.util.Optional;
+
+import com.enigmapulse.thunderclap.models.AppUser;
+import com.enigmapulse.thunderclap.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         AppUser appUser = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         // Create a Spring Security User object using the username, encoded password, and granted authorities.
-        // Here we assign a default "USER" role. You can customize this as needed.
+        // Here we assign a default "USER" role. Though not needed in our case this is how it is usually implemented so who cares
+        // In future we may assign someone with "ADMIN" role with more access of course
         return User.builder()
                 .username(appUser.getUsername())
                 .password(appUser.getPassword())
