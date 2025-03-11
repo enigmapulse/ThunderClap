@@ -8,6 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Repository interface for managing operations on the ChatMessage entity.
+ *
+ * Extends JpaRepository to provide methods for CRUD operations, pagination, and sorting.
+ * This interface serves as the data access layer for ChatMessage entities.
+ */
 @Repository
 public interface ChatRepo extends JpaRepository<ChatMessage, Long> {
 }
