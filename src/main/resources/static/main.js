@@ -1,5 +1,26 @@
 var stompClient = null;
+var messageArea = document.getElementById("messageArea");
 var username = "";
+// Old messages are fetched from the database and shown on the page after refreshing
+fetch('/old-messages')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json(); // Assuming the response is JSON
+    })
+    .then(data => {
+        if (Array.isArray(data)) {
+            data.slice().reverse().forEach((item, index) => {
+                showMessage(item)
+            });
+        } else {
+            console.log('Fetched data is not an array:', data);
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 
 // When the join chatroom button is clicked
 document.getElementById("joinChatroomButton").addEventListener("click", function() {
@@ -29,7 +50,8 @@ function connect() {
     });
 }
 
-// Send button event listener remains unchanged
+
+// Send button event listener
 document.getElementById("sendButton").addEventListener("click", function() {
     var messageInput = document.getElementById("message");
     var message = messageInput.value.trim();
