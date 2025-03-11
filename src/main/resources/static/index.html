@@ -7,10 +7,8 @@
 </head>
 <body>
 <h2>ChatRoom</h2>
-<div class="input-group">
-    <input type="text" id="username" placeholder="Enter your name">
-    <button id="connectButton">Connect</button>
-</div>
+<p id="displayUsername"></p>
+<button id="joinChatroomButton">Join Chatroom</button>
 
 <!--This is where the messages are being appended-->
 <ul id="messageArea"></ul>
@@ -19,10 +17,8 @@
     <input type="text" id="message" placeholder="Type a message...">
     <button id="sendButton">Send</button>
 </div>
-<!-- Include SockJS and StompJS libraries -->
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
-<!-- Include your main JavaScript file -->
 <script src="main.js"></script>
 </body>
 </html>
