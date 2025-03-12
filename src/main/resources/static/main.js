@@ -11,7 +11,7 @@ fetch('/old-messages')
     })
     .then(data => {
         if (Array.isArray(data)) {
-            data.slice().reverse().forEach((item, index) => {
+            data.slice().reverse().forEach((item) => {
                 showMessage(item)
             });
         } else {

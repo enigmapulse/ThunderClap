@@ -1,11 +1,13 @@
 package com.enigmapulse.thunderclap.controllers;
 
 import com.enigmapulse.thunderclap.models.ChatMessage;
+import com.enigmapulse.thunderclap.models.PrivateChatMessage;
 import com.enigmapulse.thunderclap.services.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,13 @@ import java.util.List;
 
 @RestController
 public class ChatController {
+
+    private final SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    public ChatController(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+    }
 
     // A Service for dealing with the chat messages
     @Autowired
@@ -43,5 +52,14 @@ public class ChatController {
     @GetMapping("/old-messages")
     public List<ChatMessage> getTopMessages() {
         return chatService.getTopMessages();
+    }
+
+
+    // Working: Messages sent to private-message are routed to {recipientUsername}/queue/messages. If you are Alice, you will subscribe to user/queue/messages
+    // Note that in the front-end, the stompClient will automatically replace 'user' so don't worry about it.
+    @MessageMapping("/private-message")
+    public void sendPrivateMessage(PrivateChatMessage message) {
+        String recipientUsername = message.getRecipient();
+        messagingTemplate.convertAndSendToUser(recipientUsername, "/queue/messages", message);
     }
 }

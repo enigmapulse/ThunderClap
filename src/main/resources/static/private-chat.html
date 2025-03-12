@@ -154,6 +154,8 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script>
   let searchBar = document.getElementById("searchBar");
   let suggestionsBox = document.getElementById("suggestionsBox");
@@ -162,6 +164,8 @@
   let chatMessages = document.getElementById("chatMessages");
   let messageInput = document.getElementById("messageInput");
   let sendMessageBtn = document.getElementById("sendMessage");
+  let stompClient = null;
+  let otherPersonsName = "";
 
   // Simulating search results from the backend
   async function fetchNames(query) {
@@ -187,7 +191,10 @@
     names.forEach(name => {
       let div = document.createElement("div");
       div.textContent = name;
-      div.addEventListener("click", () => openChat(name));
+      div.addEventListener("click", () => {
+        openChat(name);
+        connectStomp();
+      });
       suggestionsBox.appendChild(div);
     });
 
@@ -196,11 +203,16 @@
 
   // Open chat with selected name
   function openChat(name) {
+    // Set the other persons name
+    otherPersonsName = name;
     chatHeader.textContent = `Private chat with ${name}`;
     // chatMessages.innerHTML = ""; // Clear old messages
     chatContainer.style.display = "block";
     suggestionsBox.style.display = "none";
     searchBar.value = ""; // Clear search input
+
+    // Connect the stomp client as the chat is opened
+    connectStomp();
   }
 
   // Send message (placeholder action)
@@ -212,6 +224,13 @@
       chatMessages.appendChild(messageDiv);
       messageInput.value = "";
       chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
+
+      // After you send a message, and it's shown on your console, I will send it to the server.
+      stompClient.send("/app/private-message", {}, JSON.stringify({
+        sender : "to-do",
+        recipient : otherPersonsName,
+        content : message
+      }))
     }
   });
 
@@ -219,6 +238,29 @@
   searchBar.addEventListener("input", () => {
     fetchNames(searchBar.value);
   });
+
+  function connectStomp() {
+    // Make a socket connection
+    let socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
+
+    // Connect the stompClient
+    stompClient.connect({}, () => {
+      stompClient.subscribe('/user/queue/messages', (message) => {
+        let messageContent = JSON.parse(message.body).content;
+        console.log(messageContent);
+
+        if (messageContent) {
+          let messageDiv = document.createElement('div');
+          messageDiv.textContent = messageContent;
+          chatMessages.appendChild(messageDiv);
+          messageInput.value = "";
+          chatMessages.scrollTop = chatMessages.scrollHeight; // Auto scroll
+        }
+      })
+    })
+  }
+
 </script>
 
 </body>
