@@ -101,8 +101,27 @@
 
     <script>
         document.getElementById("chatForm").addEventListener("submit", function (e) {
+            e.preventDefault(); // Prevent the default form submission behavior
+
             let chatType = document.getElementById("chatType").value;
-            this.action = chatType === "public" ? "public-chat.html" : "private-chat.html";
+            let destinationUrl = chatType === "public" ? "public-chat.html" : "private-chat.html";
+
+            // Redirect to the appropriate chat URL
+            window.location.href = destinationUrl;
+
+            // Connect to the server only if it's public chat
+            if (chatType === "public") {
+                fetch('/username')
+                    .then(response => response.text())
+                    .then(data => {
+                        username = data.trim();
+                        document.getElementById("displayUsername").textContent = "Logged in as: " + username;
+                        connect(); // Call the provided connect() function to join the chatroom
+                    })
+                    .catch(error => console.error('Error fetching username:', error));
+            } else {
+                console.log("Connection not required for private chat.");
+            }
         });
     </script>
 

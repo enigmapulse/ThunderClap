@@ -8,7 +8,138 @@
 <body>
 <h2>ChatRoom</h2>
 <p id="displayUsername"></p>
-<button id="joinChatroomButton">Join Chatroom</button>
+
+<div class="button-container">
+    <!-- Left-aligned button -->
+    <div class="left-buttons">
+        <button id="joinChatroomButton" onclick="joinChatroom()">Join Chatroom</button>
+    </div>
+    <!-- Right-aligned buttons -->
+    <div class="right-buttons">
+        <button id="returning" onclick = returning() >Go to Menu</button>
+        <button id="logout" onclick = logout() >Logout</button>
+    </div>
+</div>
+
+<style>
+    /* Container for button alignment */
+    .button-container {
+        display: flex;                 /* Arrange buttons in a row */
+        justify-content: space-between; /* Push buttons to left and right */
+        align-items: center;           /* Vertically center buttons */
+        margin: 20px 0;                /* Add spacing above and below the container */
+    }
+
+    .left-buttons {
+        display: flex;                /* Keep left buttons grouped */
+        gap: 10px;                    /* Add spacing between buttons on the left */
+    }
+
+    .right-buttons {
+        display: flex;                /* Keep right buttons grouped */
+        gap: 10px;                    /* Add spacing between buttons on the right */
+    }
+
+    button {
+        background: var(--gradient, linear-gradient(135deg, #7289DA 0%, #5865F2 100%));
+        padding: 1rem 2rem;
+        margin: 0.75rem;
+        border-radius: 0.75rem;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: inline-block;
+        box-shadow: var(--shadow, 0 8px 32px rgba(0,0,0,0.15));
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(114,137,218,0.3);
+    }-->
+</style>
+
+<script>
+    function logout() {
+        window.location.href = '/logout';
+    }
+
+    function returning() {
+        window.location.href = '/index.html';
+    }
+</script>
+
+
+
+
+<script>
+    function joinChatroom() {
+        const joinButton = document.getElementById("joinChatroomButton");
+
+        // Disable the button to make it unclickable
+        joinButton.disabled = true;
+
+        // Change the button text (optional)
+        joinButton.textContent = "Joined";
+
+        // Perform the join chatroom logic
+        fetch('/username')
+            .then(response => response.text())
+            .then(data => {
+                const username = data.trim();
+                document.getElementById("displayUsername").textContent = "Logged in as: " + username;
+
+                // Connect to the chatroom using WebSocket
+                connect(); // Call the provided connect function
+            })
+            .catch(error => {
+                console.error('Error fetching username:', error);
+
+                // Re-enable the button if an error occurs
+                joinButton.disabled = false;
+                joinButton.textContent = "Join Chatroom";
+            });
+    }
+
+    function connect() {
+        // Example connection logic
+        const socket = new SockJS('/ws');
+        const stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            console.log('Connected to the chatroom:', frame);
+            stompClient.subscribe('/topic/public', function(messageOutput) {
+                console.log("Message received:", JSON.parse(messageOutput.body));
+            });
+        });
+    }
+</script>
+
+
+<!--<button id="exit" onclick="logout()">Log out</button>-->
+<!--<style>-->
+<!--    #exit {-->
+<!--        float: right; /* Aligns the button to the right */-->
+<!--        margin-right: 1px; /* Adds some space from the edge */-->
+<!--    }-->
+<!--</style>-->
+<!--<script>-->
+<!--    function logout() {-->
+<!--        window.location.href = '/logout'; // Redirects to the /logout page-->
+<!--    }-->
+<!--</script>-->
+
+<!--<button id="return" onclick="returning()">Return to Menu</button>-->
+<!--<style>-->
+<!--    #exit {-->
+<!--        float: right; /* Aligns the button to the right */-->
+<!--        margin-right: px; /* Adds some space from the edge */-->
+<!--    }-->
+<!--</style>-->
+<!--<script>-->
+<!--    function returning() {-->
+<!--        window.location.href = '/index.html'; // Redirects to the /logout page-->
+<!--    }-->
+<!--</script>-->
 
 <!--This is where the messages are being appended-->
 <ul id="messageArea"></ul>
