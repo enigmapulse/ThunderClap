@@ -213,6 +213,9 @@
 
     // Connect the stomp client as the chat is opened
     connectStomp();
+
+    // Clear the chat you were having with someone else
+    chatMessages.innerHTML = "";
   }
 
   // Send message (placeholder action)
@@ -220,7 +223,8 @@
     let message = messageInput.value.trim();
     if (message) {
       let messageDiv = document.createElement("div");
-      messageDiv.textContent = `You: ${message}`;
+      messageDiv.textContent = message;
+      messageDiv.style.textAlign = "right";
       chatMessages.appendChild(messageDiv);
       messageInput.value = "";
       chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
@@ -253,6 +257,7 @@
         if (messageContent) {
           let messageDiv = document.createElement('div');
           messageDiv.textContent = messageContent;
+          messageDiv.style.textAlign = "left";
           chatMessages.appendChild(messageDiv);
           messageInput.value = "";
           chatMessages.scrollTop = chatMessages.scrollHeight; // Auto scroll

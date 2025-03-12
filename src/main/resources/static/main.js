@@ -23,7 +23,7 @@ fetch('/old-messages')
     });
 
 // When the join chatroom button is clicked
-document.getElementById("joinChatroomButton").addEventListener("click", function() {
+// document.getElementById("joinChatroomButton").addEventListener("click", function() {
     // Fetch the authenticated username from your server endpoint (/username)
     fetch('/username')
         .then(response => response.text())
@@ -34,7 +34,7 @@ document.getElementById("joinChatroomButton").addEventListener("click", function
         })
         .catch(error => console.error('Error fetching username:', error));
 
-});
+// });
 
 function connect() {
     // Create a SockJS connection to the /ws endpoint
