@@ -33,6 +33,7 @@ document.getElementById("joinChatroomButton").addEventListener("click", function
             connect(); // Call the connect function
         })
         .catch(error => console.error('Error fetching username:', error));
+
 });
 
 function connect() {

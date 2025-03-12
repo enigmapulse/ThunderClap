@@ -19,7 +19,8 @@ public class ChatService {
 
     // Return the 'x' most recent messages so that refreshing doesn't destroy our page.
     public List<ChatMessage> getTopMessages() {
-        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "Serial"));
+        // You can change the number of messages that are shown on the screen here by changing the second argument
+        Pageable pageable = PageRequest.of(0, 1000, Sort.by(Sort.Direction.DESC, "Serial"));
         return chatRepo.findAll(pageable).getContent();
     }
 
