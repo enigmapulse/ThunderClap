@@ -9,6 +9,7 @@
 <h2>ChatRoom</h2>
 <p id="displayUsername"></p>
 
+<!--Code to make the buttons present at top of teh chatroom-->
 <div class="button-container">
     <!-- Left-aligned button -->
     <div class="left-buttons">
@@ -59,18 +60,18 @@
     }-->
 </style>
 
+<!--Implimantiong the button-->
 <script>
     function logout() {
         window.location.href = '/logout';
+        // logout means logout
     }
 
     function returning() {
         window.location.href = '/index.html';
+    //     It returns to the menu where u can change btw the private and public chat
     }
 </script>
-
-
-
 
 <script>
     function joinChatroom() {
@@ -114,32 +115,6 @@
     }
 </script>
 
-
-<!--<button id="exit" onclick="logout()">Log out</button>-->
-<!--<style>-->
-<!--    #exit {-->
-<!--        float: right; /* Aligns the button to the right */-->
-<!--        margin-right: 1px; /* Adds some space from the edge */-->
-<!--    }-->
-<!--</style>-->
-<!--<script>-->
-<!--    function logout() {-->
-<!--        window.location.href = '/logout'; // Redirects to the /logout page-->
-<!--    }-->
-<!--</script>-->
-
-<!--<button id="return" onclick="returning()">Return to Menu</button>-->
-<!--<style>-->
-<!--    #exit {-->
-<!--        float: right; /* Aligns the button to the right */-->
-<!--        margin-right: px; /* Adds some space from the edge */-->
-<!--    }-->
-<!--</style>-->
-<!--<script>-->
-<!--    function returning() {-->
-<!--        window.location.href = '/index.html'; // Redirects to the /logout page-->
-<!--    }-->
-<!--</script>-->
 
 <!--This is where the messages are being appended-->
 <ul id="messageArea"></ul>
