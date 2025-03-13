@@ -166,6 +166,15 @@
   let sendMessageBtn = document.getElementById("sendMessage");
   let stompClient = null;
   let otherPersonsName = "";
+  let myName = "";
+
+  // I need my username for future use
+  fetch("/username")
+          .then(response => response.text())
+          .then(data => {
+            myName = data.trim();
+          })
+          .catch(error => console.error("Error fetching username", error))
 
   // Simulating search results from the backend
   async function fetchNames(query) {
@@ -231,7 +240,7 @@
 
       // After you send a message, and it's shown on your console, I will send it to the server.
       stompClient.send("/app/private-message", {}, JSON.stringify({
-        sender : "to-do",
+        sender : myName,
         recipient : otherPersonsName,
         content : message
       }))

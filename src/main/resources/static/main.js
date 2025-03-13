@@ -22,19 +22,15 @@ fetch('/old-messages')
         console.error('Error fetching data:', error);
     });
 
-// When the join chatroom button is clicked
-// document.getElementById("joinChatroomButton").addEventListener("click", function() {
-    // Fetch the authenticated username from your server endpoint (/username)
-    fetch('/username')
-        .then(response => response.text())
-        .then(data => {
-            username = data.trim();
-            document.getElementById("displayUsername").textContent = "Logged in as: " + username;
-            connect(); // Call the connect function
-        })
-        .catch(error => console.error('Error fetching username:', error));
-
-// });
+// Fetch the authenticated username from your server endpoint (/username)
+fetch('/username')
+    .then(response => response.text())
+    .then(data => {
+        username = data.trim();
+        document.getElementById("displayUsername").textContent = "Logged in as: " + username;
+        connect(); // Call the connect function
+    })
+    .catch(error => console.error('Error fetching username:', error));
 
 function connect() {
     // Create a SockJS connection to the /ws endpoint

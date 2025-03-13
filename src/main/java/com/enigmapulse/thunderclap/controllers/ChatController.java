@@ -61,5 +61,8 @@ public class ChatController {
     public void sendPrivateMessage(PrivateChatMessage message) {
         String recipientUsername = message.getRecipient();
         messagingTemplate.convertAndSendToUser(recipientUsername, "/queue/messages", message);
+
+        // Also, save the message in a database meant specially for the two chatters
+        
     }
 }
