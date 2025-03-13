@@ -167,6 +167,27 @@
   let stompClient = null;
   let otherPersonsName = "";
   let myName = "";
+  let aesKey = ""; ////////////////////////////// TO DO 
+
+  // Creating an encryption function for end-to-end encryption
+  // async function encryptMessage(message, aesKey) {
+  //   const encoder = new TextEncoder();
+  //   const encodedMessage = encoder.encode(message);
+  //   const iv = window.crypto.getRandomValues(new Uint8Array(12)); // 12-byte IV (Nonce)
+  //
+  //   const encryptedData = await window.crypto.subtle.encrypt(
+  //           { name: "AES-GCM", iv },
+  //           aesKey,
+  //           encodedMessage
+  //   );
+  //
+  //   return {
+  //     encryptedMessage: btoa(String.fromCharCode(...new Uint8Array(encryptedData))), // Convert encrypted data to Base64
+  //     iv: btoa(String.fromCharCode(...iv)) // Convert IV to Base64
+  //   };
+  // }
+  //
+
 
   // I need my username for future use
   fetch("/username")
@@ -202,7 +223,6 @@
       div.textContent = name;
       div.addEventListener("click", () => {
         openChat(name);
-        connectStomp();
       });
       suggestionsBox.appendChild(div);
     });
@@ -220,7 +240,12 @@
     suggestionsBox.style.display = "none";
     searchBar.value = ""; // Clear search input
 
-    // Connect the stomp client as the chat is opened
+    // Disconnect and then connect the stomp client as the chat is opened
+    if (stompClient && stompClient.connected) {
+      stompClient.disconnect(() => {
+        console.log("Websocket disconnected");
+      })
+    }
     connectStomp();
 
     // Clear the chat you were having with someone else
@@ -238,11 +263,13 @@
       messageInput.value = "";
       chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
 
+      console.log("THE OTHER PERSON IS ---> ", otherPersonsName);
       // After you send a message, and it's shown on your console, I will send it to the server.
       stompClient.send("/app/private-message", {}, JSON.stringify({
-        sender : myName,
-        recipient : otherPersonsName,
-        content : message
+        senderId : myName,
+        receiverId : otherPersonsName,
+        encryptedMessage : message,
+        iv : "TO DO"
       }))
     }
   });
@@ -257,13 +284,16 @@
     let socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
 
+    // Before you subscribe,
+
     // Connect the stompClient
     stompClient.connect({}, () => {
       stompClient.subscribe('/user/queue/messages', (message) => {
-        let messageContent = JSON.parse(message.body).content;
+        let messageContent = JSON.parse(message.body).encryptedMessage;
+        let messageSender = JSON.parse(message.body).senderId;
         console.log(messageContent);
 
-        if (messageContent) {
+        if (messageContent && messageSender === otherPersonsName) {
           let messageDiv = document.createElement('div');
           messageDiv.textContent = messageContent;
           messageDiv.style.textAlign = "left";
@@ -274,6 +304,15 @@
       })
     })
   }
+
+  window.addEventListener("beforeunload", function (event) {
+    console.log("Page is about to close..");
+    if (stompClient && stompClient.connected) {
+      stompClient.disconnect(() => {
+        console.log("Websocket disconnected");
+      })
+    }
+  })
 
 </script>
 
