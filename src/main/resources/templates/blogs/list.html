@@ -6,15 +6,28 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-<h2>Blog Posts</h2>
-<a href="/blogs/new">Create New Post</a>
-<div th:each="blog : ${blogs}">
-    <h3 th:text="${blog.title}">Blog Title</h3>
-    <p th:text="${#temporals.format(blog.createdAt, 'dd MMM yyyy HH:mm')}">Date : </p>
-    <p th:utext="${blog.content}">Blog content</p>
-    <p>Likes: <span th:text="${blog.likes}">0</span> | Dislikes: <span th:text="${blog.dislikes}">0</span></p>
-    <a th:href="@{'/blogs/view/' + ${blog.id}}">View Post</a>
-    <hr/>
+<div class="container">
+    <div class="header-group">
+        <h2>Blog Posts</h2>
+        <a href="/blogs/new" class="button accent">Create New Post</a>
+    </div>
+
+    <div class="card-list">
+        <div class="card" th:each="blog : ${blogs}">
+            <div class="post-header">
+                <h3 th:text="${blog.title}">Blog Title</h3>
+                <time th:text="${#temporals.format(blog.createdAt, 'dd MMM yyyy HH:mm')}" class="text-muted"></time>
+            </div>
+            <div class="post-content" th:utext="${blog.content}"></div>
+            <div class="post-footer">
+                <div class="reactions">
+                    <span class="likes" th:text="${blog.likes + ' ❤️'}"></span>
+                    <span class="dislikes" th:text="${blog.dislikes + ' 💔'}"></span>
+                </div>
+                <a th:href="@{'/blogs/view/' + ${blog.id}}" class="button ghost">Read More</a>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

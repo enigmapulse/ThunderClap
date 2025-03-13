@@ -6,17 +6,29 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-<h2>Create Blog Post</h2>
-<form th:action="@{/blogs}" method="post" enctype="multipart/form-data">
-    <div>
-        <label>Title:</label>
-        <input type="text" name="title" required/>
-    </div>
-    <div>
-        <label>Content:</label>
-        <textarea name="content" rows="10" required></textarea>
-    </div>
-    <button type="submit">Submit</button>
-</form>
+<div class="container">
+    <h2>Create Blog Post</h2>
+    <!-- Updated new.html form structure -->
+    <form th:action="@{/blogs}" method="post" enctype="multipart/form-data" class="card">
+        <div class="input-group">
+            <label class="input-label">Title</label>
+            <input type="text" name="title" required class="modern-input"
+                   placeholder="Amazing Blog Post Title">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Content</label>
+            <textarea name="content" rows="10" required class="modern-input"
+                      placeholder="Start writing your masterpiece here..."></textarea>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="primary">
+                <span class="button-icon">📝</span>
+                Publish Post
+            </button>
+        </div>
+    </form>
+</div>
 </body>
 </html>

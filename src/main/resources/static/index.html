@@ -95,6 +95,7 @@
         <select id="chatType" name="chatType">
             <option value="public">Public Chat</option>
             <option value="private">Private Chat</option>
+            <option value="blog">Blogs</option>
         </select>
         <button type="submit">Join Chat</button>
     </form>
@@ -104,10 +105,8 @@
             e.preventDefault(); // Prevent the default form submission behavior
 
             let chatType = document.getElementById("chatType").value;
-            let destinationUrl = chatType === "public" ? "public-chat.html" : "private-chat.html";
-
             // Redirect to the appropriate chat URL
-            window.location.href = destinationUrl;
+            window.location.href = chatType === "public" ? "public-chat.html" : (chatType === "private" ? "private-chat.html" : "/blogs");
 
             // Connect to the server only if it's public chat
             if (chatType === "public") {
