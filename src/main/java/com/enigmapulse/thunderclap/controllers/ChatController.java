@@ -10,7 +10,6 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.stereotype.Controller;
 import java.util.List;
 
 @RestController
@@ -35,15 +34,16 @@ public class ChatController {
         return chatMessage;
     }
 
-    // Handle sending a chat message
     @MessageMapping("/chat.send")
     @SendTo("/topic/public")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
-        chatMessage.setType(ChatMessage.MessageType.CHAT);
-
-        // Whenever a message is sent, I want it to be stored on our database.
-        // Usually, IndexedDB or whatever is used to store data on the clients machine so that
-        // the server doesn't end up using too much storage, but here there's no problem
+        // If imageBase64 is provided, treat it as an image message
+        if (chatMessage.getImageBase64() != null) {
+            chatMessage.setType(ChatMessage.MessageType.IMAGE);
+        } else {
+            chatMessage.setType(ChatMessage.MessageType.CHAT);
+        }
+        // Save the message (works for both text and image messages)
         chatService.saveMessage(chatMessage);
         return chatMessage;
     }

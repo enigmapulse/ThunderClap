@@ -19,7 +19,48 @@
 </div>
 
 <style>
-    /* Container for button alignment */
+    .file-upload-label {
+        background: var(--gradient, linear-gradient(135deg, #7289DA 0%, #5865F2 100%));
+        color: white;
+        border-radius: 0.75rem;
+        padding: 0.4rem 0.6rem; /* Smaller padding for a compact look */
+        margin: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1rem; /* Adjust to match your theme */
+        box-shadow: var(--shadow, 0 8px 32px rgba(0, 0, 0, 0.15));
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .file-upload-label:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(114, 137, 218, 0.3);
+    }
+
+    /* If you want to reduce margins between elements in the .input-group,
+       you can adjust that here: */
+    .input-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .input-group input[type="text"] {
+        flex: 1;
+        padding: 1rem;
+        border: 2px solid var(--surface);
+        border-radius: 0.75rem;
+    }
+
+    #sendButton {
+        min-width: 120px;  /* or a fixed width, e.g., width: 120px; */
+        padding: 1rem 2rem;
+        /* You can also reapply your button styles here if needed */
+    }
+
+
     .button-container {
         display: flex;                 /* Arrange buttons in a row */
         justify-content: space-between; /* Push buttons to left and right */
@@ -116,8 +157,17 @@
 <ul id="messageArea"></ul>
 
 <div class="input-group">
-    <input type="text" id="message" placeholder="Type a message...">
+    <input type="text" id="message" placeholder="Type a message..." />
+
+    <!-- Styled label for file input -->
+    <label for="imageInput" class="file-upload-label">
+        &#128247;
+    </label>
+
     <button id="sendButton">Send</button>
+
+    <!-- Hidden file input -->
+    <input type="file" id="imageInput" accept="image/*" style="display: none;" />
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>

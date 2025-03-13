@@ -1,9 +1,6 @@
 package com.enigmapulse.thunderclap.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,10 +23,15 @@ public class ChatMessage {
     @Setter
     private MessageType type;
 
+    @Lob
+    @Getter @Setter
+    private String imageBase64;
+
     public enum MessageType {
         CHAT,
         JOIN,
-        LEAVE
+        LEAVE,
+        IMAGE
     }
 
 }

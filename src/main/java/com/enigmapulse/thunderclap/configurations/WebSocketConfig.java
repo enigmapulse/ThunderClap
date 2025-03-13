@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -16,6 +17,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         //this is the first endpoint which any client must send a get request to upgrade the connection from
         //a simple http protocol to websockets to allow duplex communication
         registry.addEndpoint("/ws").withSockJS();
+    }
+
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+        registration.setMessageSizeLimit(1000 * 1024); // Increase limit to 1000KB
+        registration.setSendBufferSizeLimit(512 * 1024);
+        registration.setSendTimeLimit(20000);
     }
 
     // Configure the message broker that will route messages from one client to another.
