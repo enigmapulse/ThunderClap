@@ -17,13 +17,9 @@ fetch('/old-messages')
         } else {
             console.log('Fetched data is not an array:', data);
         }
+        return fetch('/username');
     })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-    });
-
 // Fetch the authenticated username from your server endpoint (/username)
-fetch('/username')
     .then(response => response.text())
     .then(data => {
         username = data.trim();

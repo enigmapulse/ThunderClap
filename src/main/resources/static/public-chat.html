@@ -11,10 +11,6 @@
 
 <!--Code to make the buttons present at top of teh chatroom-->
 <div class="button-container">
-    <!-- Left-aligned button -->
-    <div class="left-buttons">
-        <button id="joinChatroomButton" onclick="joinChatroom()">Join Chatroom</button>
-    </div>
     <!-- Right-aligned buttons -->
     <div class="right-buttons">
         <button id="returning" onclick = returning() >Go to Menu</button>
@@ -60,7 +56,7 @@
     }-->
 </style>
 
-<!--Implimantiong the button-->
+<!--Implementing the button-->
 <script>
     function logout() {
         window.location.href = '/logout';
@@ -73,47 +69,47 @@
     }
 </script>
 
-<script>
-    function joinChatroom() {
-        const joinButton = document.getElementById("joinChatroomButton");
+<!--<script>-->
+<!--    function joinChatroom() {-->
+<!--        const joinButton = document.getElementById("joinChatroomButton");-->
 
-        // Disable the button to make it unclickable
-        joinButton.disabled = true;
+<!--        // Disable the button to make it unclickable-->
+<!--        joinButton.disabled = true;-->
 
-        // Change the button text (optional)
-        joinButton.textContent = "Joined";
+<!--        // Change the button text (optional)-->
+<!--        joinButton.textContent = "Joined";-->
 
-        // Perform the join chatroom logic
-        fetch('/username')
-            .then(response => response.text())
-            .then(data => {
-                const username = data.trim();
-                document.getElementById("displayUsername").textContent = "Logged in as: " + username;
+<!--        // Perform the join chatroom logic-->
+<!--        fetch('/username')-->
+<!--            .then(response => response.text())-->
+<!--            .then(data => {-->
+<!--                const username = data.trim();-->
+<!--                document.getElementById("displayUsername").textContent = "Logged in as: " + username;-->
 
-                // Connect to the chatroom using WebSocket
-                connect(); // Call the provided connect function
-            })
-            .catch(error => {
-                console.error('Error fetching username:', error);
+<!--                // Connect to the chatroom using WebSocket-->
+<!--                connect(); // Call the provided connect function-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Error fetching username:', error);-->
 
-                // Re-enable the button if an error occurs
-                joinButton.disabled = false;
-                joinButton.textContent = "Join Chatroom";
-            });
-    }
+<!--                // Re-enable the button if an error occurs-->
+<!--                joinButton.disabled = false;-->
+<!--                joinButton.textContent = "Join Chatroom";-->
+<!--            });-->
+<!--    }-->
 
-    function connect() {
-        // Example connection logic
-        const socket = new SockJS('/ws');
-        const stompClient = Stomp.over(socket);
-        stompClient.connect({}, function(frame) {
-            console.log('Connected to the chatroom:', frame);
-            stompClient.subscribe('/topic/public', function(messageOutput) {
-                console.log("Message received:", JSON.parse(messageOutput.body));
-            });
-        });
-    }
-</script>
+<!--    function connect() {-->
+<!--        // Example connection logic-->
+<!--        const socket = new SockJS('/ws');-->
+<!--        const stompClient = Stomp.over(socket);-->
+<!--        stompClient.connect({}, function(frame) {-->
+<!--            console.log('Connected to the chatroom:', frame);-->
+<!--            stompClient.subscribe('/topic/public', function(messageOutput) {-->
+<!--                console.log("Message received:", JSON.parse(messageOutput.body));-->
+<!--            });-->
+<!--        });-->
+<!--    }-->
+<!--</script>-->
 
 
 <!--This is where the messages are being appended-->
