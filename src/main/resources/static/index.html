@@ -1,24 +1,130 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WebSocket Chat</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Chat</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+    <style>
+        :root {
+            --primary: #7289DA;
+            --primary-hover: #5b6eae;
+            --background: #18191c;
+            --surface: #2f3136;
+            --text: #ffffff;
+            --text-muted: #b9bbbe;
+            --gradient: linear-gradient(135deg, #7289DA 0%, #5865F2 100%);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+
+        input, button, select {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+        }
+
+        input {
+            background: var(--surface);
+            color: var(--text);
+            border: 2px solid var(--surface);
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(114,137,218,0.25);
+            outline: none;
+        }
+
+        select {
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        button {
+            background: var(--gradient);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+        }
+    </style>
 </head>
 <body>
-<h2>ChatRoom</h2>
-<p id="displayUsername"></p>
-<button id="joinChatroomButton">Join Chatroom</button>
+<div class="login-container">
+    <h2>Chat Login</h2>
 
-<!--This is where the messages are being appended-->
-<ul id="messageArea"></ul>
+    <form id="chatForm" method="GET">
+        <select id="chatType" name="chatType">
+            <option value="public">Public Chat</option>
+            <option value="private">Private Chat</option>
+        </select>
+        <button type="submit">Join Chat</button>
+    </form>
 
-<div class="input-group">
-    <input type="text" id="message" placeholder="Type a message...">
-    <button id="sendButton">Send</button>
+    <script>
+        document.getElementById("chatForm").addEventListener("submit", function (e) {
+            e.preventDefault(); // Prevent the default form submission behavior
+
+            let chatType = document.getElementById("chatType").value;
+            let destinationUrl = chatType === "public" ? "public-chat.html" : "private-chat.html";
+
+            // Redirect to the appropriate chat URL
+            window.location.href = destinationUrl;
+
+            // Connect to the server only if it's public chat
+            if (chatType === "public") {
+                fetch('/username')
+                    .then(response => response.text())
+                    .then(data => {
+                        username = data.trim();
+                        document.getElementById("displayUsername").textContent = "Logged in as: " + username;
+                        connect(); // Call the provided connect() function to join the chatroom
+                    })
+                    .catch(error => console.error('Error fetching username:', error));
+            } else {
+                console.log("Connection not required for private chat.");
+            }
+        });
+    </script>
+
 </div>
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
-<script src="main.js"></script>
 </body>
 </html>

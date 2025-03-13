@@ -1,6 +1,8 @@
 var stompClient = null;
 var messageArea = document.getElementById("messageArea");
 var username = "";
+// Global variable to store attached image data
+var attachedImage = "";
 // Old messages are fetched from the database and shown on the page after refreshing
 fetch('/old-messages')
     .then(response => {
@@ -11,29 +13,22 @@ fetch('/old-messages')
     })
     .then(data => {
         if (Array.isArray(data)) {
-            data.slice().reverse().forEach((item, index) => {
+            data.slice().reverse().forEach((item) => {
                 showMessage(item)
             });
         } else {
             console.log('Fetched data is not an array:', data);
         }
+        return fetch('/username');
     })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-    });
-
-// When the join chatroom button is clicked
-document.getElementById("joinChatroomButton").addEventListener("click", function() {
-    // Fetch the authenticated username from your server endpoint (/username)
-    fetch('/username')
-        .then(response => response.text())
-        .then(data => {
-            username = data.trim();
-            document.getElementById("displayUsername").textContent = "Logged in as: " + username;
-            connect(); // Call the connect function
-        })
-        .catch(error => console.error('Error fetching username:', error));
-});
+// Fetch the authenticated username from your server endpoint (/username)
+    .then(response => response.text())
+    .then(data => {
+        username = data.trim();
+        document.getElementById("displayUsername").textContent = username;
+        connect(); // Call the connect function
+    })
+    .catch(error => console.error('Error fetching username:', error));
 
 function connect() {
     // Create a SockJS connection to the /ws endpoint
@@ -51,23 +46,44 @@ function connect() {
 }
 
 
-// Send button event listener
+// Send message on pressing the send button
 document.getElementById("sendButton").addEventListener("click", function() {
     var messageInput = document.getElementById("message");
-    var message = messageInput.value.trim();
-    if (message && stompClient) {
+    var messageText = messageInput.value.trim();
+    // Get the username from display or fallback to a default
+    var username = document.getElementById("displayUsername").textContent || "Anonymous";
+    console.log("Username:", username);
+    // Only send if there's text or an image attached
+    if (messageText.length > 0 || attachedImage) {
         var chatMessage = {
-            sender: username, // Use the automatically fetched username
-            content: message,
-            type: 'CHAT'
+            sender: username,
+            content: messageText,
+            imageBase64: attachedImage,  // will be empty if no image is attached
+            type: 'CHAT' // Use the same type if you want combined messages; adjust if necessary
         };
-        // Send the chat message to the server
         stompClient.send("/app/chat.send", {}, JSON.stringify(chatMessage));
+
+        // Clear the message input and reset the attached image
         messageInput.value = "";
+        attachedImage = "";
+        document.getElementById("imageInput").value = ""; // Reset file input
     }
 });
 
-// Function to display messages on the page
+// Handle file selection but do not send automatically
+document.getElementById("imageInput").addEventListener("change", function(event) {
+    var file = event.target.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            attachedImage = e.target.result; // Store the Base64 encoded image
+            // Optionally, display a preview to the user here
+            console.log("Image attached");
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
 function showMessage(message) {
     var messageArea = document.getElementById("messageArea");
     var messageElement = document.createElement("li");
@@ -84,10 +100,25 @@ function showMessage(message) {
     if (message.type === "JOIN") {
         contentSpan.textContent = "joined the chat";
     } else {
-        contentSpan.textContent = message.content;
+        // If there's image data, add an image element and insert a line break after it
+        if (message.imageBase64) {
+            var img = document.createElement("img");
+            img.src = message.imageBase64;
+            img.style.maxWidth = "500px"; // adjust as needed
+            contentSpan.appendChild(img);
+            contentSpan.appendChild(document.createElement("br"));
+        }
+        // Wrap text content in a paragraph so it appears on a new line
+        if (message.content && message.content.trim().length > 0) {
+            var textPara = document.createElement("p");
+            textPara.textContent = message.content;
+            contentSpan.appendChild(textPara);
+        }
     }
 
     messageElement.appendChild(senderSpan);
     messageElement.appendChild(contentSpan);
     messageArea.appendChild(messageElement);
 }
+
+

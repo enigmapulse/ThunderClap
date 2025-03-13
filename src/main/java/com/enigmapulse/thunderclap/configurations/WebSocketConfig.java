@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -18,12 +19,23 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws").withSockJS();
     }
 
+    @Override
+    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+        registration.setMessageSizeLimit(1000 * 1024); // Increase limit to 1000KB
+        registration.setSendBufferSizeLimit(512 * 1024);
+        registration.setSendTimeLimit(20000);
+    }
+
     // Configure the message broker that will route messages from one client to another.
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // Enables a simple in-memory broker with a destination prefix
-        registry.enableSimpleBroker("/topic");
+        registry.enableSimpleBroker("/topic", "/queue");
+
         // Prefix for messages bound for methods annotated with @MessageMapping
         registry.setApplicationDestinationPrefixes("/app");
+
+        // Enables user-specific messaging (for private chats)
+        registry.setUserDestinationPrefix("/user");
     }
 }

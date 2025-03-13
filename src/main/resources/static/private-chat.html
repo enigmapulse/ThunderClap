@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Chat</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
+  <style>
+    :root {
+      --primary: #7289DA;
+      --primary-hover: #5b6eae;
+      --background: #18191c;
+      --surface: #2f3136;
+      --text: #ffffff;
+      --text-muted: #b9bbbe;
+      --gradient: linear-gradient(135deg, #7289DA 0%, #5865F2 100%);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .search-container {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--surface);
+      border-radius: 0.75rem;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(114,137,218,0.25);
+      outline: none;
+    }
+
+    .suggestions {
+      position: absolute;
+      width: 100%;
+      background: var(--surface);
+      border-radius: 0.5rem;
+      box-shadow: var(--shadow);
+      margin-top: 5px;
+      display: none;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .suggestions div {
+      padding: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .suggestions div:hover {
+      background: var(--primary-hover);
+    }
+
+    .chat-container {
+      display: none;
+      width: 100%;
+      max-width: 500px;
+      margin-top: 2rem;
+      background: var(--surface);
+      padding: 1rem;
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow);
+    }
+
+    .chat-header {
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .chat-messages {
+      height: 200px;
+      overflow-y: auto;
+      background: var(--background);
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 10px;
+      margin-top: 1rem;
+    }
+
+    .chat-input input {
+      flex-grow: 1;
+      padding: 0.75rem;
+    }
+
+    .chat-input button {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .chat-input button:hover {
+      background: var(--primary-hover);
+    }
+  </style>
+</head>
+<body>
+
+<h1>Private Chat</h1>
+
+<div class="search-container">
+  <input type="text" id="searchBar" placeholder="Search for a name...">
+  <div class="suggestions" id="suggestionsBox"></div>
+</div>
+
+<div class="chat-container" id="chatContainer">
+  <div class="chat-header" id="chatHeader">Private chat with </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input">
+    <input type="text" id="messageInput" placeholder="Type a message...">
+    <button id="sendMessage">Send</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script>
+  let searchBar = document.getElementById("searchBar");
+  let suggestionsBox = document.getElementById("suggestionsBox");
+  let chatContainer = document.getElementById("chatContainer");
+  let chatHeader = document.getElementById("chatHeader");
+  let chatMessages = document.getElementById("chatMessages");
+  let messageInput = document.getElementById("messageInput");
+  let sendMessageBtn = document.getElementById("sendMessage");
+  let stompClient = null;
+  let otherPersonsName = "";
+  let myName = "";
+
+  // I need my username for future use
+  fetch("/username")
+          .then(response => response.text())
+          .then(data => {
+            myName = data.trim();
+          })
+          .catch(error => console.error("Error fetching username", error))
+
+  // Simulating search results from the backend
+  async function fetchNames(query) {
+    if (!query.trim()) {
+      suggestionsBox.style.display = "none";
+      return;
+    }
+
+    let response = await fetch(`/search?query=${query}`); // Backend API call
+    let names = await response.json(); // Expecting an array of names
+
+    showSuggestions(names);
+  }
+
+  // Display suggestions
+  function showSuggestions(names) {
+    suggestionsBox.innerHTML = "";
+    if (names.length === 0) {
+      suggestionsBox.style.display = "none";
+      return;
+    }
+
+    names.forEach(name => {
+      let div = document.createElement("div");
+      div.textContent = name;
+      div.addEventListener("click", () => {
+        openChat(name);
+        connectStomp();
+      });
+      suggestionsBox.appendChild(div);
+    });
+
+    suggestionsBox.style.display = "block";
+  }
+
+  // Open chat with selected name
+  function openChat(name) {
+    // Set the other persons name
+    otherPersonsName = name;
+    chatHeader.textContent = `Private chat with ${name}`;
+    // chatMessages.innerHTML = ""; // Clear old messages
+    chatContainer.style.display = "block";
+    suggestionsBox.style.display = "none";
+    searchBar.value = ""; // Clear search input
+
+    // Connect the stomp client as the chat is opened
+    connectStomp();
+
+    // Clear the chat you were having with someone else
+    chatMessages.innerHTML = "";
+  }
+
+  // Send message (placeholder action)
+  sendMessageBtn.addEventListener("click", () => {
+    let message = messageInput.value.trim();
+    if (message) {
+      let messageDiv = document.createElement("div");
+      messageDiv.textContent = message;
+      messageDiv.style.textAlign = "right";
+      chatMessages.appendChild(messageDiv);
+      messageInput.value = "";
+      chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
+
+      // After you send a message, and it's shown on your console, I will send it to the server.
+      stompClient.send("/app/private-message", {}, JSON.stringify({
+        sender : myName,
+        recipient : otherPersonsName,
+        content : message
+      }))
+    }
+  });
+
+  // Fetch names as user types
+  searchBar.addEventListener("input", () => {
+    fetchNames(searchBar.value);
+  });
+
+  function connectStomp() {
+    // Make a socket connection
+    let socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
+
+    // Connect the stompClient
+    stompClient.connect({}, () => {
+      stompClient.subscribe('/user/queue/messages', (message) => {
+        let messageContent = JSON.parse(message.body).content;
+        console.log(messageContent);
+
+        if (messageContent) {
+          let messageDiv = document.createElement('div');
+          messageDiv.textContent = messageContent;
+          messageDiv.style.textAlign = "left";
+          chatMessages.appendChild(messageDiv);
+          messageInput.value = "";
+          chatMessages.scrollTop = chatMessages.scrollHeight; // Auto scroll
+        }
+      })
+    })
+  }
+
+</script>
+
+</body>
+</html>
