@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Posts</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<h2>Blog Posts</h2>
+<a href="/blogs/new">Create New Post</a>
+<div th:each="blog : ${blogs}">
+    <h3 th:text="${blog.title}">Blog Title</h3>
+    <p th:text="${#temporals.format(blog.createdAt, 'dd MMM yyyy HH:mm')}">Date : </p>
+    <div th:if="${blog.imageUrl != null}">
+        <img th:src="${blog.imageUrl}" alt="Blog Image" style="max-width:300px;">
+    </div>
+    <p th:utext="${blog.content}">Blog content</p>
+    <p>Likes: <span th:text="${blog.likes}">0</span> | Dislikes: <span th:text="${blog.dislikes}">0</span></p>
+    <a th:href="@{'/blogs/view/' + ${blog.id}}">View Post</a>
+    <hr/>
+</div>
+</body>
+</html>

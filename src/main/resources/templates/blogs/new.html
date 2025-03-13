@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Blog Post</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<h2>Create Blog Post</h2>
+<form th:action="@{/blogs}" method="post" enctype="multipart/form-data">
+    <div>
+        <label>Title:</label>
+        <input type="text" name="title" required/>
+    </div>
+    <div>
+        <label>Content:</label>
+        <textarea name="content" rows="10" required></textarea>
+    </div>
+    <div>
+        <label>Image URL:</label>
+        <input type="text" name="imageUrl" placeholder="Optional image URL"/>
+        <!-- Alternatively, if you want to upload images, you’d need to implement file upload logic -->
+    </div>
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

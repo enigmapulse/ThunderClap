@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${blogPost.title}">Blog Post</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<h2 th:text="${blogPost.title}">Blog Title</h2>
+<p th:text="${#temporals.format(blogPost.createdAt, 'dd MMM yyyy HH:mm')}"></p>
+<div th:if="${blogPost.imageUrl != null}">
+    <img th:src="${blogPost.imageUrl}" alt="Blog Image" style="max-width:300px;">
+</div>
+<p th:utext="${blogPost.content}"></p>
+<p>Likes: <span th:text="${blogPost.likes}"></span> | Dislikes: <span th:text="${blogPost.dislikes}"></span></p>
+<form th:action="@{'/blogs/' + ${blogPost.id} + '/like'}" method="post">
+    <button type="submit">Like</button>
+</form>
+<form th:action="@{'/blogs/' + ${blogPost.id} + '/dislike'}" method="post">
+    <button type="submit">Dislike</button>
+</form>
+<hr/>
+<h3>Comments</h3>
+<div th:each="comment : ${blogPost.comments}">
+    <p>
+        <strong th:text="${comment.username}"></strong> -
+        <p th:text="${#temporals.format(blogPost.createdAt, 'dd MMM yyyy HH:mm')}">Date : </p>
+    </p>
+    <p th:text="${comment.text}"></p>
+    <hr/>
+</div>
+<h3>Add a Comment</h3>
+<form th:action="@{'/blogs/' + ${blogPost.id} + '/comment'}" method="post">
+    <textarea name="text" rows="4" required></textarea>
+    <button type="submit">Post Comment</button>
+</form>
+<a href="/blogs">Back to Blogs</a>
+</body>
+</html>
