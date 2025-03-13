@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${blogPost.title}">Blog Post</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="container">
+    <article class="card">
+        <header class="post-header">
+            <h2 th:text="${blogPost.title}">Blog Title</h2>
+            <time th:text="${#temporals.format(blogPost.createdAt, 'dd MMM yyyy HH:mm')}" class="text-muted"></time>
+        </header>
+
+        <div class="post-content" th:utext="${blogPost.content}"></div>
+
+        <div class="reaction-buttons">
+            <form th:action="@{'/blogs/' + ${blogPost.id} + '/like'}" method="post">
+                <button type="submit" class="button primary">👍 Like (<span th:text="${blogPost.likes}"></span>)</button>
+            </form>
+            <form th:action="@{'/blogs/' + ${blogPost.id} + '/dislike'}" method="post">
+                <button type="submit" class="button danger">👎 Dislike (<span th:text="${blogPost.dislikes}"></span>)</button>
+            </form>
+        </div>
+    </article>
+
+    <section class="comments card">
+        <h3>Comments</h3>
+        <div th:each="comment : ${blogPost.comments}" class="comment">
+            <div class="comment-header">
+                <strong th:text="${comment.username}"></strong>
+                <time th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}" class="text-muted"></time>
+            </div>
+            <p th:text="${comment.text}" class="comment-content"></p>
+        </div>
+
+        <h3>Add a Comment</h3>
+        <form th:action="@{'/blogs/' + ${blogPost.id} + '/comment'}" method="post" class="comment-form">
+            <textarea name="text" rows="4" required class="full-width"></textarea>
+            <div class="button-group">
+                <button type="submit" class="button primary">Post Comment</button>
+                <a href="/blogs" class="button ghost">Back to Blogs</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>
