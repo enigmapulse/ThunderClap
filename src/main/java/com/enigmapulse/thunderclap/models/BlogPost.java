@@ -20,8 +20,6 @@ public class BlogPost {
     @Lob
     private String content;
 
-    private String imageUrl;
-
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private int likes;

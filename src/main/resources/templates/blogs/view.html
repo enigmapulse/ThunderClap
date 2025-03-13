@@ -8,9 +8,6 @@
 <body>
 <h2 th:text="${blogPost.title}">Blog Title</h2>
 <p th:text="${#temporals.format(blogPost.createdAt, 'dd MMM yyyy HH:mm')}"></p>
-<div th:if="${blogPost.imageUrl != null}">
-    <img th:src="${blogPost.imageUrl}" alt="Blog Image" style="max-width:300px;">
-</div>
 <p th:utext="${blogPost.content}"></p>
 <p>Likes: <span th:text="${blogPost.likes}"></span> | Dislikes: <span th:text="${blogPost.dislikes}"></span></p>
 <form th:action="@{'/blogs/' + ${blogPost.id} + '/like'}" method="post">

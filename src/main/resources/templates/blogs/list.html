@@ -11,9 +11,6 @@
 <div th:each="blog : ${blogs}">
     <h3 th:text="${blog.title}">Blog Title</h3>
     <p th:text="${#temporals.format(blog.createdAt, 'dd MMM yyyy HH:mm')}">Date : </p>
-    <div th:if="${blog.imageUrl != null}">
-        <img th:src="${blog.imageUrl}" alt="Blog Image" style="max-width:300px;">
-    </div>
     <p th:utext="${blog.content}">Blog content</p>
     <p>Likes: <span th:text="${blog.likes}">0</span> | Dislikes: <span th:text="${blog.dislikes}">0</span></p>
     <a th:href="@{'/blogs/view/' + ${blog.id}}">View Post</a>
