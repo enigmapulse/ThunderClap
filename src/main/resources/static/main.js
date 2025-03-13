@@ -25,7 +25,7 @@ fetch('/old-messages')
     .then(response => response.text())
     .then(data => {
         username = data.trim();
-        document.getElementById("displayUsername").textContent = "Logged in as: " + username;
+        document.getElementById("displayUsername").textContent = username;
         connect(); // Call the connect function
     })
     .catch(error => console.error('Error fetching username:', error));
@@ -52,7 +52,7 @@ document.getElementById("sendButton").addEventListener("click", function() {
     var messageText = messageInput.value.trim();
     // Get the username from display or fallback to a default
     var username = document.getElementById("displayUsername").textContent || "Anonymous";
-
+    console.log("Username:", username);
     // Only send if there's text or an image attached
     if (messageText.length > 0 || attachedImage) {
         var chatMessage = {
