@@ -13,8 +13,8 @@ public class BlogService {
     @Autowired
     private BlogPostRepository blogPostRepository;
 
-    public BlogPost saveBlogPost(BlogPost blogPost) {
-        return blogPostRepository.save(blogPost);
+    public void saveBlogPost(BlogPost blogPost) {
+        blogPostRepository.save(blogPost);
     }
 
     public List<BlogPost> getAllBlogPosts() {
