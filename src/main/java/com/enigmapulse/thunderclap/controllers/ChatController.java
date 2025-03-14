@@ -66,10 +66,11 @@ public class ChatController {
     // Note that in the front-end, the stompClient will automatically replace 'user' so don't worry about it.
     @MessageMapping("/private-message")
     public void sendPrivateMessage(PrivateChatMessage privateMessage) {
+        // First, save the message in a database
+        chatService.savePrivateMessage(privateMessage);
+
         String recipientUsername = privateMessage.getReceiverId();
         messagingTemplate.convertAndSendToUser(recipientUsername, "/queue/messages", privateMessage);
 
-        // Also, save the message in a database
-        chatService.savePrivateMessage(privateMessage);
     }
 }

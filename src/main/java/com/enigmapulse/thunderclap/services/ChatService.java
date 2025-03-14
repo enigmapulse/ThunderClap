@@ -40,6 +40,6 @@ public class ChatService {
     }
 
     public List<PrivateChatMessage> getMessageHistory(String user1, String user2) {
-        return privateChatRepo.findBySenderIdAndReceiverIdOrReceiverIdAndSenderId(user1, user2, user2, user1);
+        return privateChatRepo.findBySenderIdAndReceiverIdOrSenderIdAndReceiverId(user1, user2, user2, user1);
     }
 }
