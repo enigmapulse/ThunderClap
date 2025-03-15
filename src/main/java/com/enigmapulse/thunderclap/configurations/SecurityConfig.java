@@ -28,7 +28,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         // Allow public access to these endpoints (including static pages and registration)
-                        .requestMatchers("/", "/username", "/login", "/welcome.html", "/registration.html", "/register", "/h2-console/**", "/main.js", "/sockjs/**", "/ws/**").permitAll()
+                        .requestMatchers("/", "/username", "/login", "/welcome.html","/welcome", "/registration.html", "/register", "/h2-console/**", "/main.js", "/sockjs/**", "/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // we are using spring's default login page instead of making our own

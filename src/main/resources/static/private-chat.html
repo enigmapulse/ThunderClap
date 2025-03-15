@@ -25,40 +25,42 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
-      text-align: center;
+      padding: 2rem;
     }
 
     h1 {
-      font-size: 3rem;
+      font-size: 2.5rem;
       font-weight: 800;
       background: var(--gradient);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
+      letter-spacing: -0.5px;
     }
 
     .search-container {
       position: relative;
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
     }
 
     input {
       width: 100%;
-      padding: 1rem;
+      padding: 1rem 1.5rem;
       border: 2px solid var(--surface);
-      border-radius: 0.75rem;
+      border-radius: 1rem;
       background: var(--surface);
       color: var(--text);
       font-size: 1rem;
+      transition: all 0.3s ease;
     }
 
     input:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 4px rgba(114,137,218,0.25);
+      box-shadow: 0 0 0 4px rgba(114,137,218,0.15);
       outline: none;
     }
 
@@ -66,74 +68,179 @@
       position: absolute;
       width: 100%;
       background: var(--surface);
-      border-radius: 0.5rem;
+      border-radius: 0.75rem;
       box-shadow: var(--shadow);
-      margin-top: 5px;
+      margin-top: 0.5rem;
       display: none;
-      max-height: 200px;
+      max-height: 300px;
       overflow-y: auto;
+      z-index: 100;
     }
 
     .suggestions div {
-      padding: 10px;
+      padding: 1rem;
       cursor: pointer;
       transition: background 0.2s;
+      font-weight: 500;
     }
 
     .suggestions div:hover {
-      background: var(--primary-hover);
+      background: rgba(114,137,218,0.1);
     }
 
     .chat-container {
       display: none;
       width: 100%;
-      max-width: 500px;
+      max-width: 600px;
       margin-top: 2rem;
       background: var(--surface);
-      padding: 1rem;
-      border-radius: 0.75rem;
+      padding: 1.5rem;
+      border-radius: 1.25rem;
       box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
     }
 
     .chat-header {
-      font-weight: bold;
-      margin-bottom: 1rem;
-      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+    }
+
+    .chat-header::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: block;
     }
 
     .chat-messages {
-      height: 200px;
+      height: 400px;
       overflow-y: auto;
+      padding: 1rem;
+      border-radius: 0.75rem;
       background: var(--background);
-      padding: 10px;
-      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 0.875rem 1.25rem;
+      border-radius: 1.125rem;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      position: relative;
+      animation: messageIn 0.3s ease-out;
+    }
+
+    @keyframes messageIn {
+      from { transform: translateY(10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .sent {
+      background: var(--gradient);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 0.5rem;
+    }
+
+    .received {
+      background: rgba(114,137,218,0.15);
+      color: var(--primary);
+      align-self: flex-start;
+      border-bottom-left-radius: 0.5rem;
+      position: relative;
+    }
+
+    .received::before {
+      content: '';
+      position: absolute;
+      left: -1px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--primary);
+      border-radius: 3px 0 0 3px;
+    }
+
+    .sent .timestamp {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .received .timestamp {
+      color: rgba(114,137,218,0.7);
+    }
+
+    .timestamp {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      opacity: 0.8;
     }
 
     .chat-input {
       display: flex;
-      gap: 10px;
-      margin-top: 1rem;
+      gap: 0.75rem;
+      position: relative;
     }
 
     .chat-input input {
       flex-grow: 1;
-      padding: 0.75rem;
+      padding: 1rem 1.5rem;
+      border: 2px solid var(--background);
+      border-radius: 1rem;
+      background: var(--background);
+      transition: all 0.3s ease;
+    }
+
+    .chat-input input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(114,137,218,0.15);
     }
 
     .chat-input button {
       background: var(--gradient);
       color: white;
       border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
+      padding: 0 2rem;
+      border-radius: 1rem;
       cursor: pointer;
       font-weight: 600;
-      transition: 0.3s;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      align-items: center;
+      font-size: 1rem;
     }
 
     .chat-input button:hover {
-      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(114,137,218,0.25);
     }
+
+    .chat-messages::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+      background: var(--background);
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
   </style>
 </head>
 <body>
@@ -149,7 +256,7 @@
   <div class="chat-header" id="chatHeader">Private chat with </div>
   <div class="chat-messages" id="chatMessages"></div>
   <div class="chat-input">
-    <input type="text" id="messageInput" placeholder="Type a message...">
+    <input type="text" id="messageInput" placeholder="Type a message..." autocomplete="off">
     <button id="sendMessage">Send</button>
   </div>
 </div>
@@ -157,6 +264,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script>
+  // JavaScript remains mostly the same with message display updates
   let searchBar = document.getElementById("searchBar");
   let suggestionsBox = document.getElementById("suggestionsBox");
   let chatContainer = document.getElementById("chatContainer");
@@ -168,113 +276,124 @@
   let otherPersonsName = "";
   let myName = "";
 
-  // I need my username for future use
+  // Fetch username
   fetch("/username")
           .then(response => response.text())
-          .then(data => {
-            myName = data.trim();
-          })
-          .catch(error => console.error("Error fetching username", error))
+          .then(data => { myName = data.trim(); })
+          .catch(error => console.error("Error fetching username", error));
 
-  // Simulating search results from the backend
+  // Search functionality
   async function fetchNames(query) {
     if (!query.trim()) {
       suggestionsBox.style.display = "none";
       return;
     }
 
-    let response = await fetch(`/search?query=${query}`); // Backend API call
-    let names = await response.json(); // Expecting an array of names
-
+    let response = await fetch(`/search?query=${query}`);
+    let names = await response.json();
     showSuggestions(names);
   }
 
-  // Display suggestions
   function showSuggestions(names) {
     suggestionsBox.innerHTML = "";
-    if (names.length === 0) {
-      suggestionsBox.style.display = "none";
-      return;
-    }
+    if (names.length === 0) return;
 
     names.forEach(name => {
       let div = document.createElement("div");
       div.textContent = name;
-      div.addEventListener("click", () => {
-        openChat(name);
-        connectStomp();
-      });
+      div.addEventListener("click", () => openChat(name));
       suggestionsBox.appendChild(div);
     });
-
     suggestionsBox.style.display = "block";
   }
 
-  // Open chat with selected name
+  // Chat functionality
   function openChat(name) {
-    // Set the other persons name
     otherPersonsName = name;
     chatHeader.textContent = `Private chat with ${name}`;
-    // chatMessages.innerHTML = ""; // Clear old messages
     chatContainer.style.display = "block";
     suggestionsBox.style.display = "none";
-    searchBar.value = ""; // Clear search input
+    searchBar.value = "";
 
-    // Connect the stomp client as the chat is opened
+    if (stompClient && stompClient.connected) {
+      stompClient.disconnect(() => console.log("Websocket disconnected"));
+    }
     connectStomp();
-
-    // Clear the chat you were having with someone else
     chatMessages.innerHTML = "";
   }
 
-  // Send message (placeholder action)
-  sendMessageBtn.addEventListener("click", () => {
+  sendMessageBtn.addEventListener("click", sendMessage);
+  messageInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") sendMessage();
+  });
+
+  function sendMessage() {
     let message = messageInput.value.trim();
     if (message) {
-      let messageDiv = document.createElement("div");
-      messageDiv.textContent = message;
-      messageDiv.style.textAlign = "right";
-      chatMessages.appendChild(messageDiv);
-      messageInput.value = "";
-      chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
-
-      // After you send a message, and it's shown on your console, I will send it to the server.
       stompClient.send("/app/private-message", {}, JSON.stringify({
-        sender : myName,
-        recipient : otherPersonsName,
-        content : message
-      }))
+        senderId: myName,
+        receiverId: otherPersonsName,
+        encryptedMessage: message,
+        iv: "TO DO"
+      }));
+      showMessage({
+        encryptedMessage: message,
+        senderId: myName,
+        timestamp: new Date().toISOString()
+      }, "right");
+      messageInput.value = "";
     }
-  });
-
-  // Fetch names as user types
-  searchBar.addEventListener("input", () => {
-    fetchNames(searchBar.value);
-  });
+  }
 
   function connectStomp() {
-    // Make a socket connection
     let socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
 
-    // Connect the stompClient
+    fetch(`history?user1=${myName}&user2=${otherPersonsName}`)
+            .then(response => response.json())
+            .then(data => {
+              data.forEach(message => {
+                const alignment = message.senderId === myName ? "right" : "left";
+                showMessage(message, alignment);
+              });
+            });
+
     stompClient.connect({}, () => {
       stompClient.subscribe('/user/queue/messages', (message) => {
-        let messageContent = JSON.parse(message.body).content;
-        console.log(messageContent);
-
-        if (messageContent) {
-          let messageDiv = document.createElement('div');
-          messageDiv.textContent = messageContent;
-          messageDiv.style.textAlign = "left";
-          chatMessages.appendChild(messageDiv);
-          messageInput.value = "";
-          chatMessages.scrollTop = chatMessages.scrollHeight; // Auto scroll
-        }
-      })
-    })
+        showMessage(JSON.parse(message.body), "left");
+      });
+    });
   }
 
+  function showMessage(message, alignment) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${alignment === 'right' ? 'sent' : 'received'}`;
+
+    const content = document.createElement('div');
+    content.textContent = message.encryptedMessage;
+
+    const time = document.createElement('span');
+    time.className = 'timestamp';
+    time.textContent = new Date(message.timestamp).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    messageDiv.appendChild(content);
+    messageDiv.appendChild(time);
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  window.addEventListener("beforeunload", () => {
+    if (stompClient?.connected) stompClient.disconnect();
+  });
+
+  // Event listeners
+  searchBar.addEventListener("input", () => fetchNames(searchBar.value));
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest('.search-container')) suggestionsBox.style.display = "none";
+  });
 </script>
 
 </body>
