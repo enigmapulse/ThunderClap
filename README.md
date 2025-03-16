@@ -53,7 +53,7 @@ ThunderClap is a modern Spring Boot web application that seamlessly integrates r
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/thunderclap.git
+   git clone https://github.com/enigmapulse/ThunderClap.git
    cd thunderclap
 
 2. **Build the Project:**
