@@ -276,6 +276,44 @@
   let otherPersonsName = "";
   let myName = "";
 
+  ///////////////////////////////////////////////////
+  // Keep track if you already have an encryption key for that chat somewhere
+  const request = indexedDB.open("privateChatExists", 1);
+
+  request.onsuccess = function(event) {
+
+  }
+  ////////////////////////////////////////////////////
+  // If not then do this security stuff
+  // TRYING OUT SECURITY
+  // Making your public and private keys
+  async function securityStuff() {
+    const keyPair = await window.crypto.subtle.generateKey(
+            {
+              name: "ECDH",
+              namedCurve: "P-256",
+            },
+            true,
+            ["deriveKey", "deriveBits"]
+    );
+
+    const publicKeyJwk = await window.crypto.subtle.exportKey(
+            "jwk",
+            keyPair.publicKey
+    );
+
+    const privateKeyJwk = await window.crypto.subtle.exportKey(
+            "jwk",
+            keyPair.privateKey
+    )
+
+    // Sending them to your friend
+
+  }
+
+
+  ///////////////////////////////////////////////////
+
   // Fetch username
   fetch("/username")
           .then(response => response.text())
@@ -339,7 +377,6 @@
       showMessage({
         encryptedMessage: message,
         senderId: myName,
-        timestamp: new Date().toISOString()
       }, "right");
       messageInput.value = "";
     }
@@ -349,6 +386,7 @@
     let socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
 
+    // Showing any message history that you had with your friend first
     fetch(`history?user1=${myName}&user2=${otherPersonsName}`)
             .then(response => response.json())
             .then(data => {
@@ -358,6 +396,7 @@
               });
             });
 
+    // and only then subscribing to the broadcast
     stompClient.connect({}, () => {
       stompClient.subscribe('/user/queue/messages', (message) => {
         showMessage(JSON.parse(message.body), "left");
@@ -372,15 +411,7 @@
     const content = document.createElement('div');
     content.textContent = message.encryptedMessage;
 
-    const time = document.createElement('span');
-    time.className = 'timestamp';
-    time.textContent = new Date(message.timestamp).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-
     messageDiv.appendChild(content);
-    messageDiv.appendChild(time);
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
