@@ -386,13 +386,41 @@ button:active {
     gap: 10px;                    /* Add spacing between buttons on the left */
 }
 
+/*.right-buttons {*/
+/*    display: flex;                !* Keep right buttons grouped *!*/
+/*    gap: 10px;                    !* Add spacing between buttons on the right *!*/
+/*}*/
+
+/*button {*/
+/*    background: var(--gradient, linear-gradient(135deg, #7289DA 0%, #5865F2 100%));*/
+/*    padding: 1rem 2rem;*/
+/*    margin: 0.75rem;*/
+/*    border-radius: 0.75rem;*/
+/*    color: white;*/
+/*    text-decoration: none;*/
+/*    font-weight: 600;*/
+/*    transition: transform 0.2s, box-shadow 0.2s;*/
+/*    display: inline-block;*/
+/*    box-shadow: var(--shadow, 0 8px 32px rgba(0,0,0,0.15));*/
+/*}*/
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(114,137,218,0.3);
+}-->
 .right-buttons {
-    display: flex;                /* Keep right buttons grouped */
-    gap: 10px;                    /* Add spacing between buttons on the right */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
 }
 
-button {
+.right-buttons button {
+    /*padding: 8px 16px;*/
     background: var(--gradient, linear-gradient(135deg, #7289DA 0%, #5865F2 100%));
+    /*background: #dc3545;*/
     padding: 1rem 2rem;
     margin: 0.75rem;
     border-radius: 0.75rem;
@@ -402,9 +430,19 @@ button {
     transition: transform 0.2s, box-shadow 0.2s;
     display: inline-block;
     box-shadow: var(--shadow, 0 8px 32px rgba(0,0,0,0.15));
+    /*color: white;*/
+    border: none;
+    /*border-radius: 4px;*/
+    cursor: pointer;
 }
 
-button:hover {
+.right-buttons button:hover {
+    /*background: #c82333;*/
     transform: translateY(-2px);
     box-shadow: 0 12px 40px rgba(114,137,218,0.3);
-}-->
+}
+
+/* Add margin to prevent content overlap */
+body {
+    margin-top: 70px;
+}
