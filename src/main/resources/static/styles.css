@@ -331,3 +331,80 @@ button:active {
     max-width: 100%;
     margin: 0 auto;
 }
+
+ .file-upload-label {
+     background: var(--gradient, linear-gradient(135deg, #7289DA 0%, #5865F2 100%));
+     color: white;
+     border-radius: 0.75rem;
+     padding: 0.4rem 0.6rem; /* Smaller padding for a compact look */
+     margin: 0.75rem;
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+     font-size: 1rem; /* Adjust to match your theme */
+     box-shadow: var(--shadow, 0 8px 32px rgba(0, 0, 0, 0.15));
+     transition: transform 0.2s, box-shadow 0.2s;
+ }
+
+.file-upload-label:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(114, 137, 218, 0.3);
+}
+
+/* If you want to reduce margins between elements in the .input-group,
+   you can adjust that here: */
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.input-group input[type="text"] {
+    flex: 1;
+    padding: 1rem;
+    border: 2px solid var(--surface);
+    border-radius: 0.75rem;
+}
+
+#sendButton {
+    min-width: 120px;  /* or a fixed width, e.g., width: 120px; */
+    padding: 1rem 2rem;
+    /* You can also reapply your button styles here if needed */
+}
+
+
+.button-container {
+    display: flex;                 /* Arrange buttons in a row */
+    justify-content: space-between; /* Push buttons to left and right */
+    align-items: center;           /* Vertically center buttons */
+    margin: 20px 0;                /* Add spacing above and below the container */
+}
+
+.left-buttons {
+    display: flex;                /* Keep left buttons grouped */
+    gap: 10px;                    /* Add spacing between buttons on the left */
+}
+
+.right-buttons {
+    display: flex;                /* Keep right buttons grouped */
+    gap: 10px;                    /* Add spacing between buttons on the right */
+}
+
+button {
+    background: var(--gradient, linear-gradient(135deg, #7289DA 0%, #5865F2 100%));
+    padding: 1rem 2rem;
+    margin: 0.75rem;
+    border-radius: 0.75rem;
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-block;
+    box-shadow: var(--shadow, 0 8px 32px rgba(0,0,0,0.15));
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(114,137,218,0.3);
+}-->
