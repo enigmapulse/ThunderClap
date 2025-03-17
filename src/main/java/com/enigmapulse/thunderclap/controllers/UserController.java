@@ -20,11 +20,6 @@ public class UserController {
     @Autowired
     private UserListService userListService;
 
-    /// Test code
-    //    @Autowired
-    //    private UserRepository userRepository;
-    ///
-
     // this is the endpoint which returns the current logged-in username
     @GetMapping("/username")
     public String getUsername(Principal principal) {

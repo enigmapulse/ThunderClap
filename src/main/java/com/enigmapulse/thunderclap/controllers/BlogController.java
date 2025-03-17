@@ -41,8 +41,6 @@ public class BlogController {
     public String createBlog(@ModelAttribute BlogPost blogPost, Authentication authentication) {
         // Set the blog post author from the authenticated user
         blogPost.setTitle(blogPost.getTitle()); // Already bound from form
-        // Optionally, store the username as part of blog post if needed
-        // blogPost.setAuthor(authentication.getName());
         blogService.saveBlogPost(blogPost);
         return "redirect:/blogs";
     }

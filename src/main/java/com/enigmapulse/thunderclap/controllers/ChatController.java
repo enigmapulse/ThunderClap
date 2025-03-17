@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
@@ -54,15 +55,22 @@ public class ChatController {
         return chatService.getTopMessages();
     }
 
+    // Sending the message history to the sender and receiver's urls
+    // Note that anyone can access the ENCRYPTED version of the two people's messages, which cannot be decrypted easily
+    @GetMapping("/history")
+    public List<PrivateChatMessage> getChatHistoryPrivate(@RequestParam String user1, @RequestParam String user2) {
+        return chatService.getMessageHistory(user1, user2);
+    }
 
     // Working: Messages sent to private-message are routed to {recipientUsername}/queue/messages. If you are Alice, you will subscribe to user/queue/messages
     // Note that in the front-end, the stompClient will automatically replace 'user' so don't worry about it.
     @MessageMapping("/private-message")
-    public void sendPrivateMessage(PrivateChatMessage message) {
-        String recipientUsername = message.getRecipient();
-        messagingTemplate.convertAndSendToUser(recipientUsername, "/queue/messages", message);
+    public void sendPrivateMessage(PrivateChatMessage privateMessage) {
+        // First, save the message in a database
+        chatService.savePrivateMessage(privateMessage);
 
-        // Also, save the message in a database meant specially for the two chatters
-        
+        String recipientUsername = privateMessage.getReceiverId();
+        messagingTemplate.convertAndSendToUser(recipientUsername, "/queue/messages", privateMessage);
+
     }
 }
