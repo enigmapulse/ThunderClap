@@ -41,13 +41,20 @@ public class ChatController {
         // If imageBase64 is provided, treat it as an image message
         if (chatMessage.getImageBase64() != null) {
             chatMessage.setType(ChatMessage.MessageType.IMAGE);
-        } else {
+        }
+        // If audioBase64 is provided, treat it as an audio message
+        else if (chatMessage.getAudioBase64() != null) {
+            chatMessage.setType(ChatMessage.MessageType.AUDIO);
+        }
+        else {
             chatMessage.setType(ChatMessage.MessageType.CHAT);
         }
         // Save the message (works for both text and image messages)
         chatService.saveMessage(chatMessage);
         return chatMessage;
     }
+
+
 
     // Retaining page data on refreshing the page
     @GetMapping("/old-messages")

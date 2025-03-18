@@ -27,11 +27,18 @@ public class ChatMessage {
     @Getter @Setter
     private String imageBase64;
 
+    @Lob
+    @Getter @Setter
+    private String AudioBase64;
+
+
+
     public enum MessageType {
         CHAT,
         JOIN,
         LEAVE,
-        IMAGE
+        IMAGE,
+        AUDIO
     }
 
 }
