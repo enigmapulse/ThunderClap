@@ -6,53 +6,10 @@
     <title>Login | Chat</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap">
     <link rel="stylesheet" href="index-styles.css">
-    <link rel="stylesheet" href="theme.css">
+
 
 </head>
 <body>
-
-<div class="theme-selector">
-    <select id="themeDropdown" class="theme-dropdown">
-        <option value="theme1">Theme 1</option>
-        <option value="theme2">Theme 2</option>
-    </select>
-</div>
-
-<script>
-    // Update the JavaScript
-    const themes = {
-        theme1: {
-            image: 'image1.jpg',
-            name: 'Theme 1'
-        },
-        theme2: {
-            image: 'image2.jpg',
-            name: 'Theme 2'
-        }
-    };
-
-    // Initialize theme
-    let currentTheme = localStorage.getItem('theme') || 'theme1';
-    const themeDropdown = document.getElementById('themeDropdown');
-
-    function applyTheme(theme) {
-        document.body.style.backgroundImage = `url('${themes[theme].image}')`;
-        themeDropdown.value = theme;
-        localStorage.setItem('theme', theme);
-    }
-
-    // Handle theme selection
-    themeDropdown.addEventListener('change', (e) => {
-        applyTheme(e.target.value);
-    });
-
-    // Apply saved theme on page load
-    window.addEventListener('load', () => {
-        applyTheme(currentTheme);
-        // Set dropdown to correct initial value
-        themeDropdown.value = currentTheme;
-    });
-</script>
 <div class="login-container">
     <h2>Chat Login</h2>
 
@@ -99,6 +56,6 @@
     </script>
 
 </div>
-<script src="theme.js"></script>
+
 </body>
 </html>

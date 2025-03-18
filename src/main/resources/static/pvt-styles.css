@@ -11,7 +11,7 @@
 
 body {
     font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-    /*background-image: url('image2.jpg');*/
+    background-image: url('image2.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
