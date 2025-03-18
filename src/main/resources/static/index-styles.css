@@ -1,0 +1,129 @@
+:root {
+    --primary: #7289DA;
+    --primary-hover: #5b6eae;
+    --background: #18191c;
+    --surface: #2f3136;
+    --text: #ffffff;
+    --text-muted: #b9bbbe;
+    --gradient: linear-gradient(135deg, #7289DA 0%, #5865F2 100%);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: #000000; /* Fallback */
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background: var(--surface);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+h2 {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+
+input, button, select {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+}
+
+input {
+    background: var(--surface);
+    color: var(--text);
+    border: 2px solid var(--surface);
+}
+
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(114,137,218,0.25);
+    outline: none;
+}
+
+select {
+    background: var(--surface);
+    color: var(--text);
+}
+
+button {
+    background: var(--gradient);
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: var(--primary-hover);
+}
+
+/* Add these styles to your CSS */
+.theme-selector {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.theme-dropdown {
+    padding: 10px 35px 10px 15px;
+    background: var(--gradient);
+    color: black;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 600;
+    appearance: none;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+.theme-dropdown:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(114, 137, 218, 0.4);
+}
+
+.theme-dropdown:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.3);
+}
+
+/* Hide default dropdown arrow in IE */
+.theme-dropdown::-ms-expand {
+    display: none;
+}
+
+/* Optional: Add transition effect */
+body::before {
+    transition: background-color 0.5s ease-in-out;
+}
