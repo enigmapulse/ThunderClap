@@ -4,6 +4,8 @@ var username = "";
 // Global variable to store attached image data
 var attachedImage = "";
 // Old messages are fetched from the database and shown on the page after refreshing
+var attachedAudio = "";
+// Add global variable for audio
 fetch('/old-messages')
     .then(response => {
         if (!response.ok) {
@@ -46,44 +48,47 @@ function connect() {
 }
 
 
-// Send message on pressing the send button
+
+// Modify send button event listener
 document.getElementById("sendButton").addEventListener("click", function() {
     var messageInput = document.getElementById("message");
     var messageText = messageInput.value.trim();
-    // Get the username from display or fallback to a default
     var username = document.getElementById("displayUsername").textContent || "Anonymous";
-    console.log("Username:", username);
-    // Only send if there's text or an image attached
-    if (messageText.length > 0 || attachedImage) {
+
+    // Check if there's text, image, or audio
+    if (messageText.length > 0 || attachedImage || attachedAudio) {
         var chatMessage = {
             sender: username,
             content: messageText,
-            imageBase64: attachedImage,  // will be empty if no image is attached
-            type: 'CHAT' // Use the same type if you want combined messages; adjust if necessary
+            imageBase64: attachedImage,
+            audioBase64: attachedAudio,  // New audio field
+            type: 'CHAT'
         };
         stompClient.send("/app/chat.send", {}, JSON.stringify(chatMessage));
 
-        // Clear the message input and reset the attached image
+        // Clear inputs
         messageInput.value = "";
         attachedImage = "";
-        document.getElementById("imageInput").value = ""; // Reset file input
+        attachedAudio = "";
+        document.getElementById("imageInput").value = "";
+        document.getElementById("audioInput").value = "";
     }
 });
 
-// Handle file selection but do not send automatically
-document.getElementById("imageInput").addEventListener("change", function(event) {
+// Add audio file handler
+document.getElementById("audioInput").addEventListener("change", function(event) {
     var file = event.target.files[0];
     if (file) {
         var reader = new FileReader();
         reader.onload = function(e) {
-            attachedImage = e.target.result; // Store the Base64 encoded image
-            // Optionally, display a preview to the user here
-            console.log("Image attached");
+            attachedAudio = e.target.result;
+            console.log("Audio attached");
         };
         reader.readAsDataURL(file);
     }
 });
 
+// Modified showMessage function
 function showMessage(message) {
     var messageArea = document.getElementById("messageArea");
     var messageElement = document.createElement("li");
@@ -100,15 +105,29 @@ function showMessage(message) {
     if (message.type === "JOIN") {
         contentSpan.textContent = "joined the chat";
     } else {
-        // If there's image data, add an image element and insert a line break after it
+        // Handle image
         if (message.imageBase64) {
             var img = document.createElement("img");
             img.src = message.imageBase64;
-            img.style.maxWidth = "500px"; // adjust as needed
+            img.style.maxWidth = "500px";
             contentSpan.appendChild(img);
             contentSpan.appendChild(document.createElement("br"));
         }
-        // Wrap text content in a paragraph so it appears on a new line
+
+        // Handle audio
+        if (message.audioBase64) {
+            var audio = document.createElement("audio");
+            audio.controls = true;
+            audio.style.maxWidth = "500px";
+            var source = document.createElement("source");
+            source.src = message.audioBase64;
+            source.type = "audio/wav";
+            audio.appendChild(source);
+            contentSpan.appendChild(audio);
+            contentSpan.appendChild(document.createElement("br"));
+        }
+
+        // Handle text
         if (message.content && message.content.trim().length > 0) {
             var textPara = document.createElement("p");
             textPara.textContent = message.content;
@@ -120,5 +139,3 @@ function showMessage(message) {
     messageElement.appendChild(contentSpan);
     messageArea.appendChild(messageElement);
 }
-
-
