@@ -11,7 +11,12 @@
 
 body {
     font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-    background: var(--background);
+    background-image: url('image2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: scroll;
+    background-color: #000000; /* Fallback color */
     color: var(--text);
     display: flex;
     flex-direction: column;

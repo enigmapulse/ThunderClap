@@ -1,7 +1,7 @@
 :root {
     --primary: #7289DA;
     --primary-hover: #5b6eae;
-    --background: #18191c;
+    --background: #18191c; /* Keep for component backgrounds */
     --surface: #2f3136;
     --text: #ffffff;
     --text-muted: #b9bbbe;
@@ -9,9 +9,15 @@
     --shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
+/* Updated body with background image */
 body {
     font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-    background: var(--background);
+    background-image: url('image2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: scroll;
+    background-color: #000000; /* Fallback color */
     color: var(--text);
     margin: 0 auto;
     padding: 2rem;
@@ -20,6 +26,7 @@ body {
     line-height: 1.6;
 }
 
+/* Keep all other existing styles below exactly as they were */
 @supports (font-variation-settings: normal) {
     body { font-family: 'Inter var', system-ui; }
 }
@@ -35,6 +42,44 @@ h2 {
     font-weight: 800;
     letter-spacing: -0.05em;
 }
+
+/*:root {*/
+/*    --primary: #7289DA;*/
+/*    --primary-hover: #5b6eae;*/
+/*    --background: #18191c;*/
+/*    --surface: #2f3136;*/
+/*    --text: #ffffff;*/
+/*    --text-muted: #b9bbbe;*/
+/*    --gradient: linear-gradient(135deg, #7289DA 0%, #5865F2 100%);*/
+/*    --shadow: 0 8px 32px rgba(0, 0, 0, 0.15);*/
+/*}*/
+
+/*body {*/
+/*    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;*/
+/*    background: var(--background);*/
+/*    color: var(--text);*/
+/*    margin: 0 auto;*/
+/*    padding: 2rem;*/
+/*    max-width: 800px;*/
+/*    min-height: 100vh;*/
+/*    line-height: 1.6;*/
+/*}*/
+
+/*@supports (font-variation-settings: normal) {*/
+/*    body { font-family: 'Inter var', system-ui; }*/
+/*}*/
+
+/*h2 {*/
+/*    background: var(--gradient);*/
+/*    -webkit-background-clip: text;*/
+/*    background-clip: text;*/
+/*    color: transparent;*/
+/*    text-align: center;*/
+/*    margin: 2rem 0;*/
+/*    font-size: 2.5rem;*/
+/*    font-weight: 800;*/
+/*    letter-spacing: -0.05em;*/
+/*}*/
 
 #messageArea {
     background: var(--surface);
