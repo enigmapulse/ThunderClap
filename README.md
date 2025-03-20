@@ -121,7 +121,7 @@ Once the application is running, visit [http://localhost:8080](http://localhost:
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository and submit a pull request following standard GitHub contribution guidelines.
+Contributions are welcome! Contributions are made by Navneet Kashyap, Siddhant Tiwari, Siddarth Bailkeri, and Madhavan Saini. Please fork the repository and submit a pull request following standard GitHub contribution guidelines.
 
 ---
 
