@@ -8,7 +8,7 @@ ThunderClap is a modern Spring Boot web application that seamlessly integrates r
 
 - **Real-Time Chat Room:**
   - WebSocket-based communication for instant messaging.
-  - Supports sending text and images together.
+  - Supports sending text , images and audio together.
   - Session-based authentication ensures secure chat access.
 
 - **Blog Platform:**
@@ -109,7 +109,7 @@ Once the application is running, visit [http://localhost:8080](http://localhost:
    - Users can log in via the form-based login page.
 
 2. **Chat Room:**
-   - Access the real‑time chat room to send text and images together.
+   - Access the real‑time chat room to send text , images and audio together.
    - Messages are broadcast live using WebSocket and STOMP.
 
 3. **Blog Platform:**
