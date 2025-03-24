@@ -75,6 +75,19 @@ document.getElementById("sendButton").addEventListener("click", function() {
     }
 });
 
+document.getElementById("imageInput").addEventListener("change", function(event){
+        var file = event.target.files[0];
+         if (file) {
+             var reader = new FileReader();
+             reader.onload = function(e) {
+                 attachedImage = e.target.result; // Store the Base64 encoded image
+                 // Optionally, display a preview to the user here
+                 console.log("Image attached");
+                 };
+             reader.readAsDataURL(file);
+         }
+});
+
 // Add audio file handler
 document.getElementById("audioInput").addEventListener("change", function(event) {
     var file = event.target.files[0];
