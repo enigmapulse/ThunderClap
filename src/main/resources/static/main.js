@@ -75,6 +75,7 @@ document.getElementById("sendButton").addEventListener("click", function() {
     }
 });
 
+//add image handler
 document.getElementById("imageInput").addEventListener("change", function(event){
         var file = event.target.files[0];
          if (file) {
@@ -87,6 +88,7 @@ document.getElementById("imageInput").addEventListener("change", function(event)
              reader.readAsDataURL(file);
          }
 });
+
 
 // Add audio file handler
 document.getElementById("audioInput").addEventListener("change", function(event) {
