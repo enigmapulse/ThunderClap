@@ -28,11 +28,13 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         // Allow public access to these endpoints (including static pages and registration)
-                        .requestMatchers("/", "/username", "/login", "/welcome.html","/welcome", "/registration.html", "/register", "/h2-console/**", "/main.js", "/sockjs/**", "/ws/**").permitAll()
+                        .requestMatchers("/","/css/**", "/js/**", "/images/**", "/username", "/login", "/welcome.html","/welcome", "/registration.html", "/register", "/h2-console/**", "/main.js", "/sockjs/**", "/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // we are using spring's default login page instead of making our own
-                .formLogin(Customizer.withDefaults())
+                .formLogin(login -> login
+                        .defaultSuccessUrl("/welcome.html", true) // Force redirect to welcome.html
+                )
                 // allow anyone to logout
                 .logout(LogoutConfigurer::permitAll)
                 //A cross-site request forgery (CSRF) attack is a malicious exploit
