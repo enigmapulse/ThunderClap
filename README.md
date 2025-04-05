@@ -108,14 +108,54 @@ Once the application is running, visit [http://localhost:8080](http://localhost:
    - The root URL loads the static welcome page.
    - Users can log in via the form-based login page.
 
+![Screenshot 5](Screenshot%202025-03-20%20230533.png)
+<div align="center">
+Welcome Page
+</div>
+
+![Screenshot 4](Screenshot%202025-03-20%20230358.png)
+<div align="center">
+  Login Page
+</div>
+
+
 2. **Chat Room:**
    - Access the real‑time chat room to send text , images and audio together.
    - Messages are broadcast live using WebSocket and STOMP.
+     ![Screenshot 1](Screenshot%202025-03-20%20230625.png)
+   
+<div align="center">
+Public Chat
+</div>
+
+![Screenshot 2](Screenshot%202025-03-20%20232007.png)
+<div align="center">
+  Private Chat
+</div>
+
 
 3. **Blog Platform:**
    - Visit `/blogs` to view all blog posts.
    - Create a new blog post at `/blogs/new`.
    - View individual posts, like/dislike them, and add comments.
+
+![Screenshot 3](Screenshot%202025-03-20%20232022.png)
+<div align="center">
+  Blog Main Screen
+</div>
+
+![Screenshot 7](img2.png)
+<div align="center">
+  Create New Blog
+</div>
+
+![Screenshot 6](img.png)
+<div align="center">
+  View of Blog
+</div>
+
+
+
 
 ---
 
@@ -128,4 +168,4 @@ Contributions are welcome! Contributions are made by Navneet Kashyap, Siddhant T
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
+---**

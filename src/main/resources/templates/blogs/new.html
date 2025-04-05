@@ -7,6 +7,24 @@
     <link rel="preload" as="image" href="image2.jpg">
 </head>
 <body>
+<!-- Modified button container -->
+<div class="right-buttons">
+    <button id="returning" onclick="returning()">Go to Menu</button>
+    <button id="logout" onclick="logout()">Logout</button>
+</div>
+
+<!--Implementing the button-->
+<script>
+    function logout() {
+        window.location.href = '/logout';
+        // logout means logout
+    }
+
+    function returning() {
+        window.location.href = '/index.html';
+        //     It returns to the menu where u can change btw the private and public chat
+    }
+</script>
 <div class="container">
     <h2>Create Blog Post</h2>
     <!-- Updated new.html form structure -->
