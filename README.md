@@ -144,12 +144,12 @@ Public Chat
   Blog Main Screen
 </div>
 
-![Screenshot 7](img2.png)
+![Screenshot 7](images/create_blog.png)
 <div align="center">
   Create New Blog
 </div>
 
-![Screenshot 6](img.png)
+![Screenshot 6](images/test_blog.png)
 <div align="center">
   View of Blog
 </div>
