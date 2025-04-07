@@ -108,12 +108,12 @@ Once the application is running, visit [http://localhost:8080](http://localhost:
    - The root URL loads the static welcome page.
    - Users can log in via the form-based login page.
 
-![Screenshot 5](Screenshot%202025-03-20%20230533.png)
+![Screenshot 5](images/welcome.png)
 <div align="center">
 Welcome Page
 </div>
 
-![Screenshot 4](Screenshot%202025-03-20%20230358.png)
+![Screenshot 4](images/chat_login.png)
 <div align="center">
   Login Page
 </div>
@@ -122,13 +122,13 @@ Welcome Page
 2. **Chat Room:**
    - Access the real‑time chat room to send text , images and audio together.
    - Messages are broadcast live using WebSocket and STOMP.
-     ![Screenshot 1](Screenshot%202025-03-20%20230625.png)
+     ![Screenshot 1](images/chatroom.png)
    
 <div align="center">
 Public Chat
 </div>
 
-![Screenshot 2](Screenshot%202025-03-20%20232007.png)
+![Screenshot 2](images/private_chat.png)
 <div align="center">
   Private Chat
 </div>
@@ -139,7 +139,7 @@ Public Chat
    - Create a new blog post at `/blogs/new`.
    - View individual posts, like/dislike them, and add comments.
 
-![Screenshot 3](Screenshot%202025-03-20%20232022.png)
+![Screenshot 3](images/blog_posts.png)
 <div align="center">
   Blog Main Screen
 </div>
